@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Customer;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Resources\V1\CustomerResource;
 use App\Http\Resources\V1\CustomerCollection;
-use App\Services\V1\CustomerQuery;
-use Illuminate\Http\Request;
+use App\Filters\V1\CustomersFilter;
 
 class CustomerController extends Controller
 {
@@ -18,13 +18,14 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $filter = new CustomerQuery();  // 1. Create a new filter
+        $filter = new CustomersFilter();  // 1. Create a new filter
         $queryItems = $filter->transform($request);  // 2. Transform the request
 
         if (count($queryItems) == 0) {
             return new CustomerCollection(Customer::paginate());
         } else {
-            return new CustomerCollection(Customer::where($queryItems)->paginate());  // 3. Apply the filter
+            $customers = Customer::where($queryItems)->paginate();  // 3. Apply the filter
+            return new CustomerCollection($customers->appends($request->query()));
         }
     }
 
