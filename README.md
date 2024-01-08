@@ -11,9 +11,17 @@
 
 An exercise API for customers and invoices, based on this tutorial:
 
-https://www.youtube.com/watch?v=YGqCZjdgJJk&t=291
+https://www.youtube.com/watch?v=YGqCZjdgJJk
 
+# Run API
 
+1) Run Apache server (XAMPP Control Panel)
+2) Run MySQL database (XAMPP Control Panel)
+3) Start serving
+
+```
+php artisan serve
+```
 
 ## About Laravel
 
